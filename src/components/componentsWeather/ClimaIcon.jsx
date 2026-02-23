@@ -14,14 +14,14 @@ function ClimaIcon({ dados}) {
 
   return (
       <div className="mt-4 flex flex-col items-center">
-        <p className="text-xl font-bold">{dados.temperatura}°C</p>
+
         {/* Aqui usamos a prop 'dados' para pegar a URL do icone */}
         <img
-          src={dados.icone}
-          alt="Ícone do tempo"
-          className="w-24 h-24"
+          src={`https:${dados.teste}`}
+          className="w-16 h-16"
         />
-        <p className="text-gray-600 capitalize">{dados.descricao}</p>
+        <p className="text-gray-600 capitalize">{dados.text}</p>
+        
       </div>
     );
 }
