@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { weatherApi } from "../../Apis/weatherService";
+import ClimaIcon from "./componentsWeather/ClimaIcon";
 
 function InputSearch() {
   const [cidade, setCidade] = useState("");
+  const [teste, setTeste] = useState("");
 
   const search = async () => {
     try{
       weatherApi.setCity(cidade);
-
+      const resposta = await weatherApi.iconCityRt();
+      console.log("teste", resposta);
+      setTeste(resposta);
     }catch (error) {
       console.error("Erro ao buscar:", error);
     }
@@ -39,6 +43,7 @@ function InputSearch() {
           Buscar
         </button>
       </div>
+        <ClimaIcon dados={teste}/>
     </div>
   );
 }
