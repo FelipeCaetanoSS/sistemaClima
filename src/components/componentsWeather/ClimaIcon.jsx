@@ -1,17 +1,35 @@
 import { Sun } from 'lucide-react'; // Biblioteca de ícones
-import weatherApi from '../../../Apis/weatherService.js';
+import { useState, useEffect } from 'react';
+import { weatherApi } from '../../../Apis/weatherService.js';
 
-async function ClimaIcon() {
-  const icon = await weatherApi.iconCityRt();
-  const temp = await weatherApi.tempRealTime();
+function ClimaIcon({data}) {
+  const [icon, setIcon] = useState(null);
+  const [temp, setTemp] = useState(null);
+  
+  useEffect(()=>{
+    if (data == null){
+      return
+    }
+    async function getData(){
+      try{
+        const iconRequest = await weatherApi.iconCityRt();
+        const tempRequest = await weatherApi.tempRealTime();
+        
+        setIcon(iconRequest);
+        setTemp(tempRequest);
+      }catch(error){
+        console.error("Erro ao buscar clima:", error);
+      }
+    }
+    getData();
+  }, [data]);
 
 if (icon == null){
     return(
+      <>
       <Sun className="text-yellow-400 w-12 h-12" />
-    );
-  }else if (temp == null){
-    return(
       <span className="text-xl font-light">30°C</span>
+      </>
     );
   }else{
   return (
