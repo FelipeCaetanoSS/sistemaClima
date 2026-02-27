@@ -1,3 +1,5 @@
+// link documentação https://www.weatherapi.com/docs/#weather-icons
+
 class WeatherService{
     #city;
     #API_KEY = "3c04551421a54abd988182858261302";
@@ -13,8 +15,13 @@ class WeatherService{
 
     setCity(newCity) {
         this.#city = newCity;
-        return console.log("OK: setCity",newCity);
+        //return console.log("OK: setCity",newCity);
     }
+
+    getCity(){
+        return this.#city;
+    }
+
     // Usando a forecast - mais completa
     async request() {
         const response = await fetch(`${this.#URL}${this.#forecast}?key=${this.#API_KEY}&q=${this.#city}&days=1`);
