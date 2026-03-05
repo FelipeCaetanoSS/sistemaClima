@@ -1,7 +1,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useState } from "react";
-import { weatherApi } from "../../Apis/weatherService.js";
+import { weatherApi } from "../Services/weatherService.js";
 
 function Gastos() {
   return (
@@ -13,7 +13,7 @@ function Gastos() {
     </div>
           <div className="flex flex-1/3">
           {/*Link para ir para pagina home */}
-           <HomeIcon className="text-gray-600 w-12 h-12" /> 
+           <HomeIcon className="text-gray-600 w-12 h-12" />
       <span></span>
       </div>
     <main className="flex-1">

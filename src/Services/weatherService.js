@@ -8,14 +8,13 @@ class WeatherService{
     #history = "/history.json";
     #search = "/search.json";
 
-
     constructor(initialCity = null) {
         this.#city = initialCity;
     }
 
     setCity(newCity) {
         this.#city = newCity;
-        //return console.log("OK: setCity",newCity);
+        return console.log("setCity Api:", newCity);
     }
 
     getCity(){
@@ -31,6 +30,7 @@ class WeatherService{
 
     async iconCityRt() {
         const data = await this.request();
+        // Fazer tratamento do dados
         return data.forecast.forecastday[0].day.condition.icon;
     }
 

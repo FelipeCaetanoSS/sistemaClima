@@ -3,7 +3,7 @@ import Header from '../components/Header.jsx';
 import ClimaIcon from '../components/componentsWeather/ClimaIcon.jsx';
 import WeatherCalendar from "../components/componentsWeather/WeatherCalendar";
 import { useState, useEffect } from "react";
-import { weatherApi } from "../../Apis/weatherService.js";
+import { weatherApi } from "../Services/weatherService.js";
 import { CalendarDays } from "lucide-react";
 
 function Clima() {

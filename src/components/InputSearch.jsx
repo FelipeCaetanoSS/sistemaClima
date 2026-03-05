@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { weatherApi } from "../../Apis/weatherService";
+import { weatherApi } from "../Services/weatherService";
 
 function InputSearch() {
   const [cidade, setCidade] = useState("");

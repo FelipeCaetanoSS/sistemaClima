@@ -1,7 +1,6 @@
 import { Utensils } from 'lucide-react'; // Biblioteca de ícones
-
 import { useState } from "react";
-import { weatherApi } from "../../Apis/weatherService.js";
+import { weatherApi } from "../Services/weatherService.js";
 
 function TouristPoints() {
   return (
