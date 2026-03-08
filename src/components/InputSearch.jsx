@@ -8,14 +8,14 @@ function InputSearch() {
   const { searchWeather, error } = useWeatherCity();
   const navigate = useNavigate();
 
-  function search(){
+  function search() {
     searchWeather(city);
     if (city) {
       navigate("/home");
     } else {
       return;
     }
-  };
+  }
 
   return (
     <div className="flex justify-center mt-6 mb-8">
@@ -38,13 +38,10 @@ function InputSearch() {
         <button
           className="h-full px-5 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
           onClick={search}
-          
         >
           Buscar
         </button>
-        <Toast
-        message={error}
-      />
+        <Toast message={error} />
       </div>
     </div>
   );

@@ -2,12 +2,12 @@ import ClimaIcon from "../components/componentsWeather/ClimaIcon.jsx";
 import WeatherCalendar from "../components/componentsWeather/WeatherCalendar";
 import { useState, useEffect } from "react";
 import { CalendarDays } from "lucide-react";
-import { useWeatherCity } from "../services/weatherContext.jsx";
+import { useWeatherCity } from "../services/weatherContext.js";
 
 function Clima() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [openCalendar, setOpenCalendar] = useState(false);
-  const { weatherData, loading, error } = useWeatherCity(); 
+  const { weatherData, loading, error } = useWeatherCity();
 
   useEffect(() => {
     console.log("Data selecionada no calendário:", selectedDate);
@@ -15,7 +15,6 @@ function Clima() {
 
   return (
     <div className="min-h-screen flex flex-col">
-
       <main className="flex-1">
         <div className="px-6 pt-6 pb-8">
           <div className="flex justify-between items-center max-w-4xl mx-auto">
@@ -42,7 +41,11 @@ function Clima() {
             </div>
           </div>
 
-          {loading && <p className="mt-8 text-center text-slate-500">A carregar os dados meteorológicos...</p>}
+          {loading && (
+            <p className="mt-8 text-center text-slate-500">
+              A carregar os dados meteorológicos...
+            </p>
+          )}
 
           {weatherData && !loading && (
             <>
