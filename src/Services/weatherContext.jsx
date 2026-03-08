@@ -6,13 +6,13 @@ const WeatherContext = createContext({});
 export function WeatherProvider({ children }){
     const [city, setCity] = useState("");
 
-    function getData(){
-        const data = weatherApi.getCity();
+    async function getCity(){
+        const data = weatherApi.setCity(city);
         setCity(data);
     }
 
     return (
-    <WeatherContext.Provider value={{ city, getData}}>
+    <WeatherContext.Provider value={{ city }}>
         {children}
     </WeatherContext.Provider>
     );

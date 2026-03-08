@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { weatherApi } from "../Services/weatherService";
+import { weatherApi } from "../services/weatherService";
 
 function InputSearch() {
   const [cidade, setCidade] = useState("");
 
   const search = async () => {
-    try{
+    try {
       weatherApi.setCity(cidade);
-      const resposta = await weatherApi.iconCityRt();
-      console.log(resposta);
-    }catch (error) {
+    } catch (error) {
       console.error("Erro ao buscar:", error);
     }
   };
@@ -28,12 +26,13 @@ function InputSearch() {
             if (e.key === "Enter") {
               setCidade(e.target.value);
               search();
-              }
             }
-          }/>
+          }}
+        />
 
-        <button className="h-full px-5 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
-        onClick={search}
+        <button
+          className="h-full px-5 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
+          onClick={search}
         >
           Buscar
         </button>

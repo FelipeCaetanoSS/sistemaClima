@@ -1,79 +1,79 @@
-// link documentação https://www.weatherapi.com/docs/#weather-icons
+import { config } from "./config"
+import { z } from 'zod';
 
-class WeatherService{
+export const weatherSchema = z.object({
+  current: z.object({
+    temp_c: z.number(),
+  }),
+  forecast: z.object({
+    forecastday: z.array(
+      z.object({
+        day: z.object({
+          condition: z.object({
+            text: z.string(),
+            icon: z.string(),
+          }),
+          mintemp_c: z.number(),
+          maxtemp_c: z.number(),
+          daily_chance_of_rain: z.number(),
+          maxwind_kph: z.number(),
+          avghumidity: z.number(),
+        }),
+      })
+    ),
+  }),
+})
+.transform((data) => {
+  const forecast = data.forecast.forecastday[0].day;
+
+  return {
+    iconCityRt: forecast.condition.icon,
+    textRt: forecast.condition.text,
+    tempRealTime: data.current.temp_c,
+    tempMin: forecast.mintemp_c,
+    tempMax: forecast.maxtemp_c,
+    chanceRain: forecast.daily_chance_of_rain,
+    windSpeed: forecast.maxwind_kph,
+    humidity: forecast.avghumidity,
+  };
+}); 
+
+class WeatherService {
+    #URL = config.weatherUrl;
+    #API_KEY = config.weatherKey;
+    #forecast = '/forecast.json';
     #city;
-    #API_KEY = "3c04551421a54abd988182858261302";
-    #URL = "https://api.weatherapi.com/v1";
-    #forecast = "/forecast.json";
-    #history = "/history.json";
-    #search = "/search.json";
 
-    constructor(initialCity = null) {
-        this.#city = initialCity;
-    }
-
-    setCity(newCity) {
-        this.#city = newCity;
-        return console.log("setCity Api:", newCity);
-    }
-
-    getCity(){
-        return this.#city;
-    }
-
-    // Usando a forecast - mais completa
     async request() {
-        const response = await fetch(`${this.#URL}${this.#forecast}?key=${this.#API_KEY}&q=${this.#city}&days=1`);
-        const data = await response.json();
-        return data;
-    }
+        try {
+            const response = await fetch(`${this.#URL}${this.#forecast}?key=${this.#API_KEY}&q=${this.#city}&days=1`);
+            
+            if (!response.ok) {
+                throw new Error(`Erro na API: ${response.status}`);
+            }
 
-    async iconCityRt() {
-        const data = await this.request();
-        // Fazer tratamento do dados
-        return data.forecast.forecastday[0].day.condition.icon;
-    }
+            const data = await response.json();
 
-    async tempRealTime() {
-        const data = await this.request();
-        return data.current.temp_c;
-    }
+            const validatedData = weatherSchema.parse(data); 
+            
+            return validatedData; 
 
-    async tempMin() {
-        const data = await this.request();
-        return data.forecast.forecastday[0].day.mintemp_c;
-    }
-
-    async tempMax() {
-        const data = await this.request();
-        return data.forecast.forecastday[0].day.maxtemp_c;
+        } catch (error) {
+            console.error("Erro ao processar dados do clima:", error);
+            throw error; 
+        }
     }
 
     async dayForecast(dataSelect) {
     //fazer logica de pegar as datas do usuario na previsao é no maximo 14 dias e passado preciso de parametros da data 
     //esse pega o passado const response = await fetch(`${this.#URL}${this.#history}?key=${this.#API_KEY}&q=${this.#city}&dt=${dataSelect}`);
     // para o passado usa return data.forecast.forecastday[0].day;
-        const response = await fetch(`${this.#URL}${this.#forecast}?key=${this.#API_KEY}&q=${this.#city}&days=10`);
-        const data = await response.json();
-        console.log("esse log: ", data.forecast);
-    //return data.forecast.forecastday[0].day.;
+    // const response = await fetch(`${this.#URL}${this.#forecast}?key=${this.#API_KEY}&q=${this.#city}&days=10`);
+    // const data = await response.json();
+    // console.log("esse log: ", data.forecast);
+    // const day = data.forecast.forecastday[0].day.;
+    //return day 
     }
-
-    async chanceRain(){
-        const data = await this.request();
-        return data.forecast.forecastday[0].day.daily_chance_of_rain;
-    }
-
-    async windSpeed(){
-        const data = await this.request();
-        return data.forecast.forecastday[0].day.maxwind_kph;
-    }
-
-    async humidity(){
-        const data = await this.request();
-        return data.forecast.forecastday[0].day.avghumidity;
-    }
-
 }
 
 // Exportando a instância apenas uma vez

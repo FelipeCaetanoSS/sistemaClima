@@ -1,13 +1,12 @@
-import Footer from '../components/Footer.jsx';
-import Header from '../components/Header.jsx';
-import ClimaIcon from '../components/componentsWeather/ClimaIcon.jsx';
+import Footer from "../components/Footer.jsx";
+import Header from "../components/Header.jsx";
+import ClimaIcon from "../components/componentsWeather/ClimaIcon.jsx";
 import WeatherCalendar from "../components/componentsWeather/WeatherCalendar";
 import { useState, useEffect } from "react";
-import { weatherApi } from "../Services/weatherService.js";
+import { weatherApi } from "../services/weatherService.js";
 import { CalendarDays } from "lucide-react";
 
 function Clima() {
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weather, setWeather] = useState(null);
   const [openCalendar, setOpenCalendar] = useState(false);
@@ -15,17 +14,15 @@ function Clima() {
   useEffect(() => {
     async function fetchWeather() {
       try {
-
         const data = await weatherApi("Londrina");
 
         const selectedDay = selectedDate.toISOString().split("T")[0];
 
-        const filtered = data.list.find(item =>
-          item.dt_txt.includes(selectedDay + " 12:00:00")
+        const filtered = data.list.find((item) =>
+          item.dt_txt.includes(selectedDay + " 12:00:00"),
         );
 
         setWeather(filtered);
-
       } catch (error) {
         console.error("Erro ao buscar clima:", error);
       }
@@ -36,15 +33,11 @@ function Clima() {
 
   return (
     <div className="min-h-screen flex flex-col">
-
       <Header />
 
       <main className="flex-1">
-
         <div className="px-6 pt-6 pb-8">
-
           <div className="flex justify-between items-center max-w-4xl mx-auto">
-
             <div className="flex items-center gap-4">
               <ClimaIcon />
               {weather && (
@@ -54,26 +47,23 @@ function Clima() {
               )}
             </div>
 
-            <div 
+            <div
               onClick={() => setOpenCalendar(true)}
               className="flex items-center gap-2 cursor-pointer hover:scale-105 transition"
             >
               <CalendarDays className="text-black" />
               <div>
-                <p className="text-lg font-semibold text-slate-800">
-                  Londrina
-                </p>
+                <p className="text-lg font-semibold text-slate-800">Londrina</p>
                 <p className="text-sm text-slate-600">
                   {selectedDate.toLocaleDateString("pt-BR", {
                     weekday: "long",
                     day: "2-digit",
                     month: "2-digit",
-                    year: "numeric"
+                    year: "numeric",
                   })}
                 </p>
               </div>
             </div>
-
           </div>
 
           {weather && (
@@ -83,17 +73,15 @@ function Clima() {
               <p>🌬 Vento: {weather?.wind?.speed} km/h</p>
             </div>
           )}
-
         </div>
 
         <div className="bg-white mx-6 mt-6 p-6 rounded-3xl shadow-lg text-slate-700 text-center">
           <p>
             O dia {selectedDate.getDate()} está com temperatura de{" "}
-            {weather && Math.round(weather?.main?.temp)}°C.
-            Clima ideal para atividades ao ar livre.
+            {weather && Math.round(weather?.main?.temp)}°C. Clima ideal para
+            atividades ao ar livre.
           </p>
         </div>
-
       </main>
 
       <Footer />
@@ -101,8 +89,7 @@ function Clima() {
       {openCalendar && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-3xl shadow-xl">
-
-            <WeatherCalendar 
+            <WeatherCalendar
               onSelectDate={(date) => {
                 setSelectedDate(date);
                 setOpenCalendar(false);
@@ -115,11 +102,9 @@ function Clima() {
             >
               Fechar
             </button>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }
