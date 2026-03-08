@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { weatherApi } from "../services/weatherService";
+import { useWeatherCity } from "../services/weatherContext";
+import Toast from "./toast";
 
 function InputSearch() {
-  const [cidade, setCidade] = useState("");
+  const [city, setCity] = useState("");
+  const { searchWeather, error } = useWeatherCity();
 
-  const search = async () => {
-    try {
-      weatherApi.setCity(cidade);
-    } catch (error) {
-      console.error("Erro ao buscar:", error);
-    }
+  function search(){
+    searchWeather(city);
   };
 
   return (
@@ -20,11 +18,11 @@ function InputSearch() {
           type="text"
           id="search"
           placeholder="Digite o nome da cidade..."
-          value={cidade}
-          onChange={(e) => setCidade(e.target.value)}
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setCidade(e.target.value);
+              setCity(e.target.value);
               search();
             }
           }}
@@ -36,6 +34,9 @@ function InputSearch() {
         >
           Buscar
         </button>
+        <Toast
+        message={error}
+      />
       </div>
     </div>
   );

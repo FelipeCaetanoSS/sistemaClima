@@ -12,7 +12,7 @@ function Informations() {
       </div>
 
       <div className="flex flex-col items-center cursor-pointer hover:scale-110 transition">
-        <Link to="/outgoing" ></Link>
+        {/* <Link to="/outgoing" ></Link> */}
         <FaMoneyBillWave className="text-green-600 w-10 h-10" />
         <span className="text-xl font-light mt-1">R$250</span>
       </div>

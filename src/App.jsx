@@ -11,17 +11,17 @@ function App() {
   return (
     <WeatherProvider>
       <Home />
-
-      {/* <BrowserRouter>
-     <Routes>
-       <Route exct path="/" element={initilPage/>} />
-       <Route path="/home" element={<Home/>} />
-       <Route path="/climate" element={<Clima/>} />
-       <Route path="/locals" element={<Locals/>} />
-       <Route path="/outgoing" element={<Gastos/>} />
-     </Routes>
-   </BrowserRouter> */}
-    </WeatherProvider>
+  </WeatherProvider>
+  //     {/* <BrowserRouter>
+  //    <Routes>
+  //      <Route exct path="/" element={initilPage/>} />
+  //      <Route path="/home" element={<Home/>} />
+  //      <Route path="/climate" element={<Clima/>} />
+  //      <Route path="/locals" element={<Locals/>} />
+  //      <Route path="/outgoing" element={<Gastos/>} />
+  //    </Routes>
+  //  </BrowserRouter> */}
+    
   );
 }
 

@@ -1,4 +1,4 @@
-import { config } from "./config"
+import { config } from "../config/config";
 import { z } from 'zod';
 
 export const weatherSchema = z.object({
@@ -39,7 +39,8 @@ export const weatherSchema = z.object({
 }); 
 
 class WeatherService {
-    #URL = config.weatherUrl;
+    //#URL = config.weatherUrl;
+    #URL;
     #API_KEY = config.weatherKey;
     #forecast = '/forecast.json';
     #city;
@@ -62,6 +63,16 @@ class WeatherService {
             console.error("Erro ao processar dados do clima:", error);
             throw error; 
         }
+    }
+
+      async setCity(newCity) {
+        if (!newCity) return null;
+        this.#city = newCity;
+        const data = await this.request();
+        //const data = ;
+        console.log("Cidade nova:", newCity);
+        console.log("dados:", data);
+        return data;
     }
 
     async dayForecast(dataSelect) {
