@@ -3,7 +3,7 @@ import { useState } from "react";
 import { weatherApi } from "../services/weather/weatherService.js";
 import { Link } from "react-router";
 
-// corrigir aqui - fazer um foreach ou map para renderizar os locais 
+// corrigir aqui - fazer um foreach ou map para renderizar os locais e deixar maior o card e responsivo
 
 function TouristPoints() {
   return (

@@ -1,4 +1,4 @@
-
+// corrigir aqui - fazer layout e inspirar no figma
 function Gastos() {
   return (
     <div>

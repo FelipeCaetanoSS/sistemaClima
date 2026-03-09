@@ -9,6 +9,7 @@ function Clima() {
   const [openCalendar, setOpenCalendar] = useState(false);
   const { weatherData, loading, error } = useWeatherCity();
 
+// corrigir aqui - melhorar o layout e inspirar no figma
   useEffect(() => {
     console.log("Data selecionada no calendário:", selectedDate);
   }, [selectedDate]);

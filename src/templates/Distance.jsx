@@ -1,5 +1,5 @@
 import { FaTaxi } from "react-icons/fa";
-
+// corrigir aqui - fazer layout e inspirar no figma
 function Distance() {
   return (
     <div>
