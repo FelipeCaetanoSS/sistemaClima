@@ -43,8 +43,8 @@ export const weatherSchema = z.object({
 }); 
 
 class WeatherService {
-    //#URL = config.weatherUrl;
-    #URL;
+    #URL = config.weatherUrl;
+    //#URL;
     #API_KEY = config.weatherKey;
     #forecast = '/forecast.json';
     #city;
