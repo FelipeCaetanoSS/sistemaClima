@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useWeatherCity } from "../services/weather/weatherContext";
-import Toast from "./Toast";
+import Toast from "./toast";
 import { useNavigate } from "react-router";
 
 function InputSearch() {

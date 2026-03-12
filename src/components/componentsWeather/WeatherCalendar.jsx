@@ -15,6 +15,7 @@ function WeatherCalendar({ onSelectDate }) {
   return (
     <div className="flex flex-col items-center mt-6">
 
+      {/* Data Selecionada */}
       <h2 className="text-xl font-semibold mb-4 text-slate-800">
         {format(selected, "dd 'de' MMMM yyyy", { locale: ptBR })}
       </h2>

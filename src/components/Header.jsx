@@ -40,7 +40,7 @@ function Header() {
     <header className="w-full bg-white/80 backdrop-blur-md shadow-sm sticky flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-4 md:h-24 transition-all border-b border-slate-200">
       <div className="flex items-center gap-3">
         <h1
-          className="text-xl md:text-2xl text-sky-900 font-extrabold tracking-tight cursor-pointer"
+          className="text-xl md:text-2xl text-sky-900 font-extrabold tracking-tight"
           onClick={onClick}
         >
           Sistema Clima

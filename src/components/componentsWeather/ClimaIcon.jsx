@@ -5,30 +5,24 @@ function ClimaIcon() {
   const [icon, setIcon] = useState(null);
   const [temp, setTemp] = useState(null);
   const { city, weatherData } = useWeatherCity();
-//  corrigir aqui - fazer vericação do icone fixo ou pegar da api
+
   useEffect(() => {
-    async function getData() {
-      if (city !== null) {
-        const iconApi = weatherData.iconCityRt;
-        const tempApi = weatherData.tempRealTime;
-        setIcon(iconApi);
-        setTemp(tempApi);
-        return;
-      } else {
-        const iconFixed = "";
-        const tempFixed = 27;
-        setIcon(iconFixed);
-        setTemp(tempFixed);
-      }
+    if (city && weatherData) {
+      setIcon(weatherData.iconCityRt);
+      setTemp(weatherData.tempRealTime);
+    } else {
+      setIcon("/src/assets/sun.png");
+      setTemp(30);
     }
-    getData();
-  }, [city]);
+  }, [city, weatherData]);
 
   return (
-    <>
-      <img src={`https:${icon}`} alt="Icone Clima" className="w-16 h-16" />
-      <p className="text-gray-600 capitalize">{Math.round(temp)}°C</p>
-    </>
+    <div className="flex flex-col items-center justify-center gap-1">
+      {icon && <img src={icon} alt="Ícone clima" className="w-10 h-10" />}
+      <p className="text-gray-600 text-lg">
+        {temp !== null ? Math.round(temp) : "30"}°C
+      </p>
+    </div>
   );
 }
 

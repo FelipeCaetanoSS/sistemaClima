@@ -9,18 +9,23 @@ function Clima() {
   const [openCalendar, setOpenCalendar] = useState(false);
   const { weatherData, loading, error } = useWeatherCity();
 
-// corrigir aqui - melhorar o layout e inspirar no figma
   useEffect(() => {
     console.log("Data selecionada no calendário:", selectedDate);
   }, [selectedDate]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-yellow-300 via-yellow-200 to-purple-400">
       <main className="flex-1">
         <div className="px-6 pt-6 pb-8">
           <div className="flex justify-between items-center max-w-4xl mx-auto">
             <div className="flex items-center gap-4">
+              <div>
               <ClimaIcon />
+              <p>Chuva: 10%
+                Umidade: 43%
+                Vento: 11 km/h
+              </p>
+              </div>
             </div>
 
             <div

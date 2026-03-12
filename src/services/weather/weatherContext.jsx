@@ -10,14 +10,8 @@ export function WeatherProvider({ children }){
     const [loading, setLoading] = useState(null);
     const [error, setError] = useState(null);
 
-if (city == null) {
-    const lastCity = localStorage.getItem('lastCity');
-    setCity(lastCity);
-}
-
     async function searchWeather(newCity){
         setCity(newCity);
-        localStorage.setItem('lastCity', {city});
     }
     
      useEffect(() => {
