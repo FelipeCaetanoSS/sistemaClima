@@ -31,7 +31,7 @@ function Header() {
     };
 
     reloadTime();
-    const interval = setInterval(reloadTime, 10000);
+    const interval = setInterval(reloadTime, 5000);
 
     return () => clearInterval(interval);
   }, []);

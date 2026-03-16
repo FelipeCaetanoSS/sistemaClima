@@ -1,34 +1,19 @@
-import { useEffect, useState } from "react";
 import { useWeatherCity } from "../../services/weather/weatherContext.jsx";
+import sunIcon from "../../assets/sun.png"; 
 
 function ClimaIcon() {
-  const [icon, setIcon] = useState(null);
-  const [temp, setTemp] = useState(null);
   const { city, weatherData } = useWeatherCity();
-//  corrigir aqui - fazer vericação do icone fixo ou pegar da api
-  useEffect(() => {
-    async function getData() {
-      if (city !== null) {
-        const iconApi = weatherData.iconCityRt;
-        const tempApi = weatherData.tempRealTime;
-        setIcon(iconApi);
-        setTemp(tempApi);
-        return;
-      } else {
-        const iconFixed = "";
-        const tempFixed = 27;
-        setIcon(iconFixed);
-        setTemp(tempFixed);
-      }
-    }
-    getData();
-  }, [city]);
+
+  const data = city && weatherData;
+
+  const icon = data ? `https:${weatherData.iconCityRt}` : sunIcon;
+  const temp = data ? Math.round(weatherData.tempRealTime) : 30;
 
   return (
-    <>
-      <img src={`https:${icon}`} alt="Icone Clima" className="w-16 h-16" />
-      <p className="text-gray-600 capitalize">{Math.round(temp)}°C</p>
-    </>
+    <div className="flex flex-col items-center justify-center gap-1">
+      <img src={icon} alt="Icone Clima" className="w-16 h-16" />
+      <p className="text-gray-600 text-lg capitalize">{temp}°C</p>
+    </div>
   );
 }
 
