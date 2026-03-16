@@ -3,6 +3,10 @@ import { z } from "zod";
 
 export const weatherSchema = z
   .object({
+    location: z.object({
+      lat: z.number(),
+      lon: z.number(),
+      }),
     current: z.object({
       temp_c: z.number(),
       condition: z.object({
@@ -40,6 +44,8 @@ export const weatherSchema = z
       chanceRain: forecast.daily_chance_of_rain,
       windSpeed: forecast.maxwind_kph,
       humidity: forecast.avghumidity,
+      lat: data.location.lat,
+      lon: data.location.lon
     };
   });
 
@@ -61,7 +67,6 @@ class WeatherService {
       }
 
       const data = await response.json();
-
       const validatedData = weatherSchema.parse(data);
 
       return validatedData;
@@ -71,13 +76,12 @@ class WeatherService {
     }
   }
 
-  async setCity(newCity) {
-    if (!newCity) return null;
+  async newCity(newCity) {
     this.#city = newCity;
     const data = await this.request();
     //const data = ;
     console.log("Cidade nova:", newCity);
-    console.log("dados:", data);
+    //console.log("dados:", data);
     return data;
   }
 

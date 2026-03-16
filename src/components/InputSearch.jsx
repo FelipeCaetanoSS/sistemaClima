@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useWeatherCity } from "../services/weather/weatherContext";
 import Toast from "./Toast";
 import { useNavigate } from "react-router";
-import { touristPointsApi } from "../services/touristPoints/touristPointsService"
+import { touristPointsApi } from "../services/touristPoints/touristPointsService";
 
 function InputSearch() {
   const [city, setCity] = useState("");
-  const { searchWeather, error } = useWeatherCity();
+  const { searchWeather, error, weatherData } = useWeatherCity();
   const navigate = useNavigate();
 
+
   function search() {
-    touristPointsApi.request(city);
+    //touristPointsApi.request();
+
     searchWeather(city);
     if (city) {
       navigate("/home");

@@ -1,61 +1,66 @@
-import { createContext, useState, useContext } from 'react';
-import { useEffect } from 'react';
-import { weatherApi } from './weatherService';
-import { touristPointsApi } from '../touristPoints/touristPointsService';
+import { createContext, useState, useContext, useEffect } from "react";
+import { weatherApi } from "./weatherService";
+import { touristPointsApi } from "../touristPoints/touristPointsService"; // Importamos a API de locais
 
 const WeatherContext = createContext({});
 
-export function WeatherProvider({ children }){
-    const [city, setCity] = useState("");
-    const [weatherData, setWeatherData] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [error, setError] = useState(null);
+export function WeatherProvider({ children }) {
+  const [city, setCity] = useState(() => localStorage.getItem('lastCity') || "");
+  const [weatherData, setWeatherData] = useState(null);
+  const [globalLocals, setGlobalLocals] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-if (city === null) {
-    const lastCity = localStorage.getItem('lastCity');
-    setCity(lastCity);
-}
+  async function searchWeather(newCity) {
+    const formatCity =
+    newCity.charAt(0).toUpperCase() + newCity.slice(1).toLowerCase();
+    setCity(formatCity);
+    localStorage.setItem('lastCity', formatCity);
+  }
 
-    async function searchWeather(newCity){
-        setCity(newCity);
-        localStorage.setItem('lastCity', {city});
-    }
+  useEffect(() => {
+    if (!city) return;
     
-    useEffect(() => {
-        if (!city) return;
-        const fetchWeather = async () => {
-            setLoading(true);
+    const fetchAllData = async () => {
+      setLoading(true);
+      setError(null);
 
-            const responseWeather = await weatherApi.setCity(city);
-            const dataWeather = responseWeather.json();
-            const responseLocals = await touristPointsApi.request();
-            const dataLocals = responseLocals.json();
-            setLoading(false);
+      try {
+        // 1. Busca o Clima
+        const responseWeather = await weatherApi.newCity(city);
+        if (!responseWeather) {
+          setError("Não foi possível encontrar a cidade.");
+          return;
+        }
+        setWeatherData(responseWeather);
 
-            if(!dataWeather){
-            setError("Não foi possível encontrar a cidade.");
-            exit;
-            }
-            if(!dataLocals){
-            setError("Não foi possível encontrar os pontos turisticos.");
-            exit;
-            }
-            setWeatherData(dataWeather);
-            setWeatherLocals(dataLocals);
-        };
+        // 2. Busca os Locais MISTOS (Turismo e Alimentação) UMA ÚNICA VEZ
+        await touristPointsApi.formatCoord(responseWeather.lat, responseWeather.lon);
+        // Passamos múltiplas categorias separadas por vírgula para a API Geoapify
+        const locais = await touristPointsApi.request("tourism,catering.restaurant,catering.cafe", 20);
+        setGlobalLocals(locais || []);
 
-        fetchWeather();
-    }, [city]);
+      } catch (err) {
+        console.error(err);
+        setError("Erro ao buscar os dados.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchAllData();
+  }, [city]);
 
-    return (
-    <WeatherContext.Provider value={{ city, weatherData, loading, error, searchWeather}}>
-        {children}
+  return (
+    <WeatherContext.Provider
+      // Exportamos o globalLocals para o resto do app
+      value={{ city, weatherData, globalLocals, loading, error, searchWeather }}
+    >
+      {children}
     </WeatherContext.Provider>
-    );
+  );
 }
 
-export function useWeatherCity(){
-    const context = useContext(WeatherContext);
-    return context;
+export function useWeatherCity() {
+  return useContext(WeatherContext);
 }

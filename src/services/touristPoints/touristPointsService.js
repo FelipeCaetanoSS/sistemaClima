@@ -1,47 +1,87 @@
 import { config } from "../../config/config";
 import { z } from "zod";
+import { newCord } from "./controller";
 
 export const localsSchema = z.object({
-  current: z.object({
-    temp_c: z.number(),
-    condition: z.object({
-      text: z.string(),
-      icon: z.string(),
-    }),
+  geometry: z.object({
+    coordinates: z.array(z.number()).optional(),
+  }).optional(),
+  properties: z.object({
+    name: z.string().optional(),
+    categories: z.array(z.string()).optional(),
+    opening_hours: z.string().optional(),
+    address_line2: z.string().optional(),
+    website: z.string().optional(),
+    "website:menu": z.string().optional(),
+
+    datasource: z.object({
+      raw: z.object({
+        "website:menu": z.string().optional(),
+      }).passthrough().optional(), 
+    }).optional(),
+    contact: z.object({
+      phone: z.string().optional(),
+    }).optional(),
+    facilities: z.object({
+      wheelchair: z.boolean().optional(),
+      takeaway: z.boolean().optional(),
+      delivery: z.boolean().optional(),
+    }).optional(),
   }),
+})
+.transform((data) => {
+  const p = data.properties;
+  const urlDoMenu = p.datasource?.raw?.["website:menu"] || p["website:menu"] || null;
+
+  return {
+    name: p.name || "Local sem nome",
+    categories: p.categories || [],
+    openingHours: p.opening_hours || null,
+    address: p.address_line2 || null,
+    website: p.website || null,
+    menuUrl: urlDoMenu,
+    phone: p.contact?.phone || null,
+    hasWheelchair: p.facilities?.wheelchair || false,
+    hasTakeaway: p.facilities?.takeaway || false,
+    hasDelivery: p.facilities?.delivery || false,
+    lon: data.geometry?.coordinates?.[0] || null,
+    lat: data.geometry?.coordinates?.[1] || null,
+  };
 });
 
-class TouristPointService {
-  #URL = config.localsUrl;
-  //#URL;
-  #API_KEY = config.localsKey;
+export const localsListSchema = z.array(localsSchema);
 
-  async request(city) {
-    try {
-      const response = await fetch(
-        `https://corsproxy.io/?${this.#URL}?query=${city}&sort=POPULARITY`,
+class TouristPointService {
+  //#URL = config.localsUrl;
+  #URL;
+  #API_KEY = config.localsKey;
+  #coordenadas;
+
+async request(category = "tourism.attraction", limit = 10) {
+    const response = await fetch(
+        `${this.#URL}?categories=${category}&filter=rect:${this.#coordenadas}&limit=${limit}&apiKey=${this.#API_KEY}`,
         {
           method: "GET",
           headers: {
-            "X-Places-Api-Version": "2025-06-17",
-            accept: "application/json",
-            Authorization: "Bearer " + this.#API_KEY,
+            accept: "application/geo+json",
           },
         },
       );
-      // if (!response) {
-      //   throw new Error(`Erro na API: ${response}`);
-      // }
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status}`);
+      }
 
       const data = await response.json();
+      console.log("teste dados", data);
+      const validatedData = z.array(localsSchema).parse(data.features);
+      console.log("teste dados 2", validatedData);
 
-      //const validatedData = localsSchema.parse(data);
+      return validatedData;
+  }
 
-      //return validatedData;
-      return console.log("Json api:", data);
-    } catch (error) {
-      console.error("Erro lugares:", error);
-    }
+  async formatCoord(lat, lon){
+    const result = await newCord(lat, lon);
+    this.#coordenadas = result;
   }
 }
 
