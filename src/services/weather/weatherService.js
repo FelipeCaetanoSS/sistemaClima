@@ -50,8 +50,8 @@ export const weatherSchema = z
   });
 
 class WeatherService {
-  //#URL = config.weatherUrl;
-  #URL;
+  #URL = config.weatherUrl;
+  //#URL;
   #API_KEY = config.weatherKey;
   #forecast = "/forecast.json";
   #city;
@@ -68,6 +68,7 @@ class WeatherService {
 
       const data = await response.json();
       const validatedData = weatherSchema.parse(data);
+      console.log(validatedData);
 
       return validatedData;
     } catch (error) {

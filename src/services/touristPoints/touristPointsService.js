@@ -20,7 +20,7 @@ export const localsSchema = z.object({
       }).passthrough().optional(), 
     }).optional(),
     contact: z.object({
-      phone: z.string().optional(),
+      phone: z.coerce.string().optional(),
     }).optional(),
     facilities: z.object({
       wheelchair: z.boolean().optional(),
@@ -52,8 +52,8 @@ export const localsSchema = z.object({
 export const localsListSchema = z.array(localsSchema);
 
 class TouristPointService {
-  //#URL = config.localsUrl;
-  #URL;
+  #URL = config.localsUrl;
+  //#URL;
   #API_KEY = config.localsKey;
   #coordenadas;
 
@@ -72,9 +72,7 @@ async request(category = "tourism.attraction", limit = 10) {
       }
 
       const data = await response.json();
-      console.log("teste dados", data);
       const validatedData = z.array(localsSchema).parse(data.features);
-      console.log("teste dados 2", validatedData);
 
       return validatedData;
   }

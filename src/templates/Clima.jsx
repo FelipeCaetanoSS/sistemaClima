@@ -1,6 +1,6 @@
 import ClimaIcon from "../components/componentsWeather/ClimaIcon.jsx";
 import WeatherCalendar from "../components/componentsWeather/WeatherCalendar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CalendarDays } from "lucide-react";
 import { useWeatherCity } from "../services/weather/weatherContext.jsx";
 import { FaWind, FaTint, FaTemperatureHigh, FaSun } from "react-icons/fa";
@@ -23,12 +23,53 @@ function Clima() {
   const displayWeather = weatherData || mockWeather;
   const displayCity = city || "Cidade";
 
+  // 🔥 TEXTO DINÂMICO COMPLETO
+  const temp = displayWeather.tempRealTime;
+  const descricao = displayWeather.textRt;
+  const vento = displayWeather.windSpeed;
+  const umidade = displayWeather.humidity;
+  const chuva = displayWeather.chanceRain;
+
+  let textoClima = "";
+
+  if (temp >= 29) {
+    textoClima = `
+O dia ${selectedDate.getDate()} apresenta ${descricao.toLowerCase()}, com temperatura de ${temp}°C e sensação de calor mais intenso.
+
+A umidade relativa do ar está em ${umidade}%, o que contribui para uma sensação térmica mais elevada. ${
+      vento > 20
+        ? `Os ventos estão mais fortes (${vento} km/h), ajudando a aliviar o calor.`
+        : `Os ventos estão leves (${vento} km/h), mantendo o clima mais abafado.`
+    }
+
+A probabilidade de chuva é de ${chuva}%, indicando ${
+      chuva > 40 ? "chance de mudanças no tempo ao longo do dia." : "baixo risco de chuva."
+    }
+
+Recomenda-se hidratação constante e evitar exposição ao sol nos horários mais quentes.
+`;
+  } else {
+    textoClima = `
+O dia ${selectedDate.getDate()} apresenta ${descricao.toLowerCase()}, com temperatura de ${temp}°C e clima agradável.
+
+A umidade está em ${umidade}%, contribuindo para uma sensação térmica confortável. ${
+      vento > 20
+        ? `Os ventos moderados (${vento} km/h) deixam o clima ainda mais fresco.`
+        : `A brisa leve (${vento} km/h) mantém o ambiente estável e agradável.`
+    }
+
+A chance de chuva é de ${chuva}%, indicando ${
+      chuva > 40 ? "possibilidade de instabilidade." : "baixa probabilidade de precipitação."
+    }
+
+Condições ideais para atividades ao ar livre ao longo do dia.
+`;
+  }
+
   return (
     <div className="">
-
       <main className="flex-1 flex flex-col">
         <div className="px-6 pt-6 pb-8">
-
           <div className="flex justify-between items-center max-w-4xl mx-auto">
             <div className="flex items-center gap-4">
               <ClimaIcon />
@@ -54,13 +95,11 @@ function Clima() {
             <Card icon={<FaTint />} label="Umidade" value={`${displayWeather.humidity}%`} />
             <Card icon={<FaSun />} label="Chuva" value={`${displayWeather.chanceRain}%`} />
           </div>
-
         </div>
-
-        <div className="max-w-4xl mx-auto mb-100 mt-70 p-6 bg-white rounded-3xl shadow text-center">
-          <p>
-            O dia {selectedDate.getDate()} está com temperatura de {displayWeather.tempRealTime}°C.
-            Ótimo dia para sair ☀️
+        
+        <div className="max-w-4xl mx-auto mt-10 mb-10 p-6 bg-white rounded-3xl shadow text-center">
+          <p className="text-sm md:text-base leading-relaxed whitespace-pre-line">
+            {textoClima}
           </p>
         </div>
       </main>
