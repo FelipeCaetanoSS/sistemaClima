@@ -10,7 +10,7 @@ function Gastos() {
   const precoDia = 300; 
   const total = dias * precoDia;
 
-  const displayCity = city || "Londrina (Exemplo)";
+  const displayCity = city || "Cidade";
 
   const diminuirDias = () => setDias(prev => (prev > 1 ? prev - 1 : 1));
   const aumentarDias = () => setDias(prev => prev + 1);
