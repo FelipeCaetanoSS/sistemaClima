@@ -5,7 +5,7 @@ import { useWeatherCity } from "../services/weather/weatherContext.jsx";
 
 function Distance() {
   const { city, globalLocals, loading } = useWeatherCity();
-  const displayCity = city || "Londrina (Exemplo)";
+  const displayCity = city || "Cidade";
 
   const cafesList = globalLocals?.filter(l => l.categories?.some(c => c.includes("cafe"))) || [];
   const restaurantesList = globalLocals?.filter(l => l.categories?.some(c => c.includes("restaurant"))) || [];
