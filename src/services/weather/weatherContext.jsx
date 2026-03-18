@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { weatherApi } from "./weatherService";
-import { touristPointsApi } from "../touristPoints/touristPointsService"; // Importamos a API de locais
+import { touristPointsApi } from "../touristPoints/touristPointsService"; 
 
 const WeatherContext = createContext({});
 
@@ -12,14 +12,13 @@ export function WeatherProvider({ children }) {
   const [error, setError] = useState(null);
 
   async function searchWeather(newCity) {
-    const formatCity =
-    newCity.charAt(0).toUpperCase() + newCity.slice(1).toLowerCase();
+    const formatCity = newCity.charAt(0).toUpperCase() + newCity.slice(1).toLowerCase();
     setCity(formatCity);
     localStorage.setItem('lastCity', formatCity);
   }
 
   useEffect(() => {
-    if (!city) return;
+    if (!city || city === null) return;
     
     const fetchAllData = async () => {
       setLoading(true);

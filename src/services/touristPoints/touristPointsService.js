@@ -20,7 +20,7 @@ export const localsSchema = z.object({
       }).passthrough().optional(), 
     }).optional(),
     contact: z.object({
-      phone: z.string().optional(),
+      phone: z.coerce.string().optional(),
     }).optional(),
     facilities: z.object({
       wheelchair: z.boolean().optional(),
