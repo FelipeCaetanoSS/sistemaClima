@@ -12,7 +12,6 @@ function Gastos() {
 
   const displayCity = city || "Londrina (Exemplo)";
 
-  // Funções para controlar os dias de forma mais amigável que um input type="number"
   const diminuirDias = () => setDias(prev => (prev > 1 ? prev - 1 : 1));
   const aumentarDias = () => setDias(prev => prev + 1);
 
@@ -24,7 +23,6 @@ function Gastos() {
           <p className="text-center text-slate-500 py-8">A calcular orçamento...</p>
         ) : (
           <>
-            {/* Card Principal: Cidade e Controlo de Dias */}
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-6">
               
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
@@ -67,12 +65,10 @@ function Gastos() {
 
             </div>
 
-            {/* Texto Resumo */}
             <p className="text-center text-slate-600 text-sm mb-8 px-4">
               A estimativa para <strong className="text-slate-800">{dias} dias</strong> em <strong className="text-slate-800">{displayCity}</strong> é de aproximadamente <strong className="text-blue-600">R${total}</strong> por pessoa, considerando hospedagem, alimentação e transporte básico.
             </p>
 
-            {/* Grelha de Gastos Detalhados */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               
               <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:border-orange-200 transition">
@@ -101,7 +97,6 @@ function Gastos() {
 
             </div>
 
-            {/* Aviso Contextual (Disclaimer) */}
             <div className="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex items-start gap-3 text-sm text-amber-800">
               <Info size={20} className="shrink-0 text-amber-600 mt-0.5" />
               <p>

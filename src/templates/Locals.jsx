@@ -44,8 +44,7 @@ function Locals() {
   const [locais, setLocais] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categoriaAtiva, setCategoriaAtiva] = useState(FILTROS[0].value);
-  
-  // 2. Estado para controlar qual card está aberto
+
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
@@ -64,7 +63,6 @@ function Locals() {
       }
     }
 
-    // Fecha os cards sempre que mudar de categoria
     setExpandedId(null);
     fetchLocaisFiltrados();
   }, [weatherData?.lat, weatherData?.lon, categoriaAtiva]);
@@ -72,7 +70,6 @@ function Locals() {
   const displayLocais = (weatherData && locais.length > 0) ? locais : mockLocais;
   const { Icon, bgColor, textColor } = getStyleByFilter(categoriaAtiva);
 
-  // Função para alternar a abertura do card
   const toggleCard = (index) => {
     setExpandedId(expandedId === index ? null : index);
   };
@@ -115,7 +112,6 @@ function Locals() {
                     }`}
                     onClick={() => toggleCard(index)}
                   >
-                    {/* Cabeçalho do Card */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="flex items-center gap-4 flex-1">
                         <div className={`${bgColor} ${textColor} p-3 rounded-lg shrink-0`}>
@@ -136,18 +132,15 @@ function Locals() {
                             <p className="text-xs sm:max-w-[180px] line-clamp-1">{local.address}</p>
                           </div>
                         )}
-                        {/* Ícone de Setinha para indicar que expande */}
                         <div className="text-slate-400 shrink-0 ml-2">
                           {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </div>
                       </div>
                     </div>
 
-                    {/* Corpo do Card (Visível apenas se expandido) */}
                     {isExpanded && (
                       <div className="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3 text-sm text-slate-600 animate-in fade-in slide-in-from-top-2 duration-200">
-                        
-                        {/* Informações Práticas */}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {local.openingHours && (
                             <div className="flex items-start gap-2">
@@ -185,7 +178,6 @@ function Locals() {
                           )}
                         </div>
 
-                        {/* Badges (Acessibilidade, Takeaway...) */}
                         <div className="flex flex-wrap gap-2 mt-2">
                           {local.hasWheelchair && (
                             <span className="flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium border border-blue-100">
