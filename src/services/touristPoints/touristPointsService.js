@@ -85,5 +85,4 @@ async request(category = "tourism.attraction", limit = 10) {
   }
 }
 
-// Exportando a instância apenas uma vez
 export const touristPointsApi = new TouristPointService();

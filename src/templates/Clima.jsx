@@ -28,8 +28,11 @@ function Clima() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1">
+
+      <main className="flex-1 flex flex-col">
+        
         <div className="px-6 pt-6 pb-8">
+
           <div className="flex justify-between items-center max-w-4xl mx-auto">
             <div className="flex items-center gap-4">
               <ClimaIcon />
@@ -59,24 +62,27 @@ function Clima() {
               A carregar os dados meteorológicos...
             </p>
           ) : (
-            <>
-              <div className="mt-6 text-center text-slate-700 text-sm space-y-1">
-                <p>Chuva: {displayWeather.chanceRain}%</p>
-                <p>Umidade: {displayWeather.humidity}%</p>
-                <p>Vento: {Math.round(displayWeather.windSpeed)} km/h</p>
-                <p>Temp Max: {Math.round(displayWeather.tempMax)}°C</p>
-                <p>Temp Min: {Math.round(displayWeather.tempMin)}°C</p>
-                <p className="font-semibold text-blue-600 mt-2">{displayWeather.textRt}</p>
-              </div>
-            </>
+            <div className="mt-6 max-w-4xl mx-auto text-left text-slate-700 text-sm space-y-1">
+              <p>Chuva: {displayWeather.chanceRain}%</p>
+              <p>Umidade: {displayWeather.humidity}%</p>
+              <p>Vento: {Math.round(displayWeather.windSpeed)} km/h</p>
+              <p>Temp Max: {Math.round(displayWeather.tempMax)}°C</p>
+              <p>Temp Min: {Math.round(displayWeather.tempMin)}°C</p>
+              <p className="font-semibold text-blue-600 mt-2">
+                {displayWeather.textRt}
+              </p>
+            </div>
           )}
         </div>
 
         {!loading && (
-          <div className="bg-white mx-6 mt-2 p-6 rounded-3xl shadow-lg text-slate-700 text-center">
+          <div className="max-w-4xl mx-auto bg-white mt-100 mb-4 p-6 rounded-3x1 shadow-lg text-slate-800 text-center">
             <p>
               O dia {selectedDate.getDate()} está com temperatura de{" "}
-              <span className="font-bold">{Math.round(displayWeather.tempRealTime)}°C</span>. Clima ideal para atividades ao ar livre.
+              <span className="font-bold">
+                {Math.round(displayWeather.tempRealTime)}°C
+              </span>
+              . Clima ideal para atividades ao ar livre.
             </p>
           </div>
         )}

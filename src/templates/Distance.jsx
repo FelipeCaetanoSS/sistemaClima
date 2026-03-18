@@ -7,17 +7,14 @@ function Distance() {
   const { city, globalLocals, loading } = useWeatherCity();
   const displayCity = city || "Londrina (Exemplo)";
 
-  // 1. Filtramos todos os locais por categoria, criando 3 listas independentes
   const cafesList = globalLocals?.filter(l => l.categories?.some(c => c.includes("cafe"))) || [];
   const restaurantesList = globalLocals?.filter(l => l.categories?.some(c => c.includes("restaurant"))) || [];
   const atracoesList = globalLocals?.filter(l => l.categories?.some(c => c.includes("tourism"))) || [];
 
-  // 2. Criamos estados para guardar qual é o índice (posição) selecionado em cada lista
   const [cafeIdx, setCafeIdx] = useState(0);
   const [restIdx, setRestIdx] = useState(0);
   const [atracaoIdx, setAtracaoIdx] = useState(0);
 
-  // 3. Montamos a estrutura dinâmica. Se a lista da API estiver vazia, usamos um mock de fallback.
   const destinations = [
     { 
       time: "10 min", 
@@ -58,7 +55,6 @@ function Distance() {
           <p className="text-center text-slate-500 py-8">A calcular rotas para os locais...</p>
         ) : (
           <>
-            {/* Banner da Cidade */}
             <div className="flex items-center justify-between mb-8 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
               <div className="flex items-center gap-3">
                 <div className="bg-red-100 p-2.5 rounded-lg text-red-600">
@@ -70,27 +66,22 @@ function Distance() {
               </div>
             </div>
 
-            {/* Grelha de Destinos Interativos */}
             <div className="flex flex-col gap-4 mb-8">
               {destinations.map((item, index) => (
                 <div key={index} className="flex items-center gap-4">
-                  
-                  {/* Tempo (Fixo na esquerda) */}
+
                   <div className="w-20 shrink-0 text-right">
                     <span className="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full text-sm font-semibold shadow-sm">
                       {item.time}
                     </span>
                   </div>
 
-                  {/* Cartão Interativo (Dropdown Camuflado) */}
                   <div className="relative bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 w-full hover:border-blue-300 hover:shadow-md transition-all focus-within:ring-2 focus-within:ring-blue-500">
-                    
-                    {/* Ícone */}
+
                     <div className={`${item.bgClass} ${item.colorClass} p-3 rounded-xl shrink-0`}>
                       <item.Icon size={20} />
                     </div>
-                    
-                    {/* Textos */}
+
                     <div className="flex-1 min-w-0 pr-2">
                       <p className="text-sm font-bold text-slate-800 line-clamp-1">
                         {item.options[item.selectedIndex]?.name}
@@ -100,10 +91,8 @@ function Distance() {
                       </p>
                     </div>
 
-                    {/* Seta para indicar que é clicável */}
                     <ChevronDown size={18} className="text-slate-400 shrink-0" />
 
-                    {/* O Segredo: Select nativo invisível cobrindo todo o cartão */}
                     <select
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       value={item.selectedIndex}
@@ -123,7 +112,6 @@ function Distance() {
               ))}
             </div>
 
-            {/* Avisos */}
             <div className="space-y-4">
               <div className="bg-blue-50 border border-blue-100 p-4 rounded-2xl flex items-start gap-3 text-sm text-blue-800">
                 <Info size={20} className="shrink-0 text-blue-500 mt-0.5" />

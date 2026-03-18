@@ -26,7 +26,6 @@ export function WeatherProvider({ children }) {
       setError(null);
 
       try {
-        // 1. Busca o Clima
         const responseWeather = await weatherApi.newCity(city);
         if (!responseWeather) {
           setError("Não foi possível encontrar a cidade.");
@@ -34,9 +33,7 @@ export function WeatherProvider({ children }) {
         }
         setWeatherData(responseWeather);
 
-        // 2. Busca os Locais MISTOS (Turismo e Alimentação) UMA ÚNICA VEZ
         await touristPointsApi.formatCoord(responseWeather.lat, responseWeather.lon);
-        // Passamos múltiplas categorias separadas por vírgula para a API Geoapify
         const locais = await touristPointsApi.request("tourism,catering.restaurant,catering.cafe", 20);
         setGlobalLocals(locais || []);
 
@@ -53,7 +50,6 @@ export function WeatherProvider({ children }) {
 
   return (
     <WeatherContext.Provider
-      // Exportamos o globalLocals para o resto do app
       value={{ city, weatherData, globalLocals, loading, error, searchWeather }}
     >
       {children}
