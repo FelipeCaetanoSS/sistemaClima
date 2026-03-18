@@ -3,15 +3,12 @@ import WeatherCalendar from "../components/componentsWeather/WeatherCalendar";
 import { useState, useEffect } from "react";
 import { CalendarDays } from "lucide-react";
 import { useWeatherCity } from "../services/weather/weatherContext.jsx";
+import { FaWind, FaTint, FaTemperatureHigh, FaSun } from "react-icons/fa";
 
 function Clima() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [openCalendar, setOpenCalendar] = useState(false);
   const { weatherData, loading, city } = useWeatherCity();
-
-  useEffect(() => {
-    console.log("Data selecionada no calendário:", selectedDate);
-  }, [selectedDate]);
 
   const mockWeather = {
     chanceRain: 10,
@@ -27,10 +24,9 @@ function Clima() {
   const displayCity = city || "Cidade";
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="">
 
       <main className="flex-1 flex flex-col">
-        
         <div className="px-6 pt-6 pb-8">
 
           <div className="flex justify-between items-center max-w-4xl mx-auto">
@@ -42,70 +38,55 @@ function Clima() {
               onClick={() => setOpenCalendar(true)}
               className="flex items-center gap-2 cursor-pointer hover:scale-105 transition"
             >
-              <CalendarDays className="text-black" />
+              <CalendarDays />
               <div>
-                <p className="text-lg font-semibold text-slate-800">{displayCity}</p>
-                <p className="text-sm text-slate-600">
-                  {selectedDate.toLocaleDateString("pt-BR", {
-                    weekday: "long",
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  })}
+                <p className="text-lg font-semibold">{displayCity}</p>
+                <p className="text-sm">
+                  {selectedDate.toLocaleDateString("pt-BR")}
                 </p>
               </div>
             </div>
           </div>
 
-          {loading ? (
-            <p className="mt-8 text-center text-slate-500">
-              A carregar os dados meteorológicos...
-            </p>
-          ) : (
-            <div className="mt-6 max-w-4xl mx-auto text-left text-slate-700 text-sm space-y-1">
-              <p>Chuva: {displayWeather.chanceRain}%</p>
-              <p>Umidade: {displayWeather.humidity}%</p>
-              <p>Vento: {Math.round(displayWeather.windSpeed)} km/h</p>
-              <p>Temp Max: {Math.round(displayWeather.tempMax)}°C</p>
-              <p>Temp Min: {Math.round(displayWeather.tempMin)}°C</p>
-              <p className="font-semibold text-blue-600 mt-2">
-                {displayWeather.textRt}
-              </p>
-            </div>
-          )}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-4xl mx-auto">
+            <Card icon={<FaTemperatureHigh />} label="Sensação" value={`${displayWeather.tempRealTime}°C`} />
+            <Card icon={<FaWind />} label="Vento" value={`${displayWeather.windSpeed} km/h`} />
+            <Card icon={<FaTint />} label="Umidade" value={`${displayWeather.humidity}%`} />
+            <Card icon={<FaSun />} label="Chuva" value={`${displayWeather.chanceRain}%`} />
+          </div>
+
         </div>
 
-        {!loading && (
-          <div className="max-w-4xl mx-auto bg-white mt-100 mb-4 p-6 rounded-3x1 shadow-lg text-slate-800 text-center">
-            <p>
-              O dia {selectedDate.getDate()} está com temperatura de{" "}
-              <span className="font-bold">
-                {Math.round(displayWeather.tempRealTime)}°C
-              </span>
-              . Clima ideal para atividades ao ar livre.
-            </p>
-          </div>
-        )}
+        <div className="max-w-4xl mx-auto mb-100 mt-70 p-6 bg-white rounded-3xl shadow text-center">
+          <p>
+            O dia {selectedDate.getDate()} está com temperatura de {displayWeather.tempRealTime}°C.
+            Ótimo dia para sair ☀️
+          </p>
+        </div>
       </main>
 
       {openCalendar && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-3xl shadow-xl">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-3xl">
             <WeatherCalendar
               onSelectDate={(date) => {
                 setSelectedDate(date);
                 setOpenCalendar(false);
               }}
             />
-            <button
-              onClick={() => setOpenCalendar(false)}
-              className="mt-4 w-full bg-red-500 text-white py-2 rounded-xl"
-            >
-              Fechar
-            </button>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function Card({ icon, label, value }) {
+  return (
+    <div className="bg-white p-4 rounded-2xl shadow text-center">
+      <div className="text-xl">{icon}</div>
+      <p>{label}</p>
+      <p className="font-bold">{value}</p>
     </div>
   );
 }
