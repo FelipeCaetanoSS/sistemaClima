@@ -2,25 +2,22 @@ import { useState } from "react";
 import { useWeatherCity } from "../services/weather/weatherContext";
 import Toast from "./Toast";
 import { useNavigate } from "react-router";
-import { touristPointsApi } from "../services/touristPoints/touristPointsService";
 
 function InputSearch() {
   const [city, setCity] = useState("");
-  const { searchWeather, error, weatherData } = useWeatherCity();
+  const { searchWeather, error } = useWeatherCity();
   const navigate = useNavigate();
 
 
-  function search() {
-    searchWeather(city);
-    if (city) {
+  async function search() {
+    const success = await searchWeather(city);
+    if (success) {
       navigate("/home");
-    } else {
-      return;
     }
   }
 
   return (
-    <div className="flex justify-center mt-6 mb-8">
+    <div className="flex justify-center mt-6 mb-8">      
       <div className="relative flex items-center w-96 h-10 rounded-md bg-gray-100 border border-gray-300 shadow-sm focus-within:shadow-md focus-within:border-gray-400 overflow-hidden transition-all duration-300">
         <input
           className="w-full h-full pl-4 pr-4 outline-none text-gray-700 text-sm bg-transparent placeholder-gray-500"
