@@ -1,16 +1,52 @@
-# React + Vite
+# Sistema Clima 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Uma plataforma unificada para planejamento de viagens que integra previsão meteorológica em tempo real, roteirização, gestão financeira e guia turístico.
 
-Currently, two official plugins are available:
+O **Sistema Clima** foi desenvolvido com uma visão clara de produto: resolver a fragmentação de ferramentas durante o planejamento de uma viagem. Em vez de usar um app para o clima, outro para gastos e um terceiro para mapas, o usuário encontra tudo em uma única Single Page Application (SPA) rápida e intuitiva.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*Disponível em*: https://climanovo.vercel.app
 
-## React Compiler
+---
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Visão de Arquitetura
 
-## Expanding the ESLint configuration
+Este projeto não é apenas uma interface bonita; ele foi arquitetado pensando em escalabilidade, resiliência de dados e manutenção a longo prazo, aplicando conceitos reais da engenharia de software:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Consumo Resiliente de APIs Externas:** O coração da aplicação é a integração com APIs meteorológicas. Em vez de requisições espalhadas por componentes, o consumo é centralizado, tratado e encapsulado.
+* **Anti-Corruption Layer (Validação de Schemas):** Os payloads (dados) recebidos da API externa não são injetados às cegas na aplicação. Utilizando o **Zod**, os dados passam por uma validação estrita de contrato (Schema Validation). Se a API terceira mudar o formato, o sistema intercepta o erro na fronteira, evitando quebras inesperadas na interface do usuário.
+* **Service Pattern:** Toda a lógica de comunicação de rede e regras de negócio da API de clima está isolada na classe `WeatherService`. Isso mantém os componentes do React (UI) extremamente "limpos" e focados apenas em renderização.
+
+---
+
+## Funcionalidades Principais
+
+* **Monitoramento Climático (/clima):** Consumo de API REST para dados meteorológicos em tempo real, previsões estendidas, velocidade do vento e probabilidade de chuva.
+* **Cálculo de Rotas (/distancia):** Ferramenta integrada para calcular distâncias e facilitar o planejamento logístico da viagem.
+* **Gestão de Orçamento (/gastos):** Módulo financeiro para controle de despesas, garantindo que a viagem caiba no bolso.
+* **Exploração Local (/locais):** Descoberta de pontos de interesse e atrações turísticas no destino selecionado.
+
+---
+
+## Stack Tecnológica
+
+Ecossistema moderno focado em User interface e User Experience (UX e UI):
+
+* **Front-end:** React 19 + Vite 
+* **Roteamento:** React Router v7 
+* **Estilização:** Tailwind CSS v4 
+* **Integração e Validação:** Zod 
+
+---
+
+## Como Executar Localmente
+
+### 1. Pré-requisitos
+Certifique-se de ter o **Node.js v22** instalado em seu ambiente.
+
+### 2. Passo a Passo
+
+Clone o repositório e instale as dependências:
+```bash
+git clone https://github.com/FelipeCaetanoSS/sistemaClima.git
+cd climanovo
+npm install
