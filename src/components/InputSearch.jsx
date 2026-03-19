@@ -11,8 +11,6 @@ function InputSearch() {
 
 
   function search() {
-    //touristPointsApi.request();
-
     searchWeather(city);
     if (city) {
       navigate("/home");

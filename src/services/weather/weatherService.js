@@ -51,7 +51,6 @@ export const weatherSchema = z
 
 class WeatherService {
   #URL = config.weatherUrl;
-  //#URL;
   #API_KEY = config.weatherKey;
   #forecast = "/forecast.json";
   #city;
@@ -80,9 +79,7 @@ class WeatherService {
   async newCity(newCity) {
     this.#city = newCity;
     const data = await this.request();
-    //const data = ;
     console.log("Cidade nova:", newCity);
-    //console.log("dados:", data);
     return data;
   }
 
