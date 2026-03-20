@@ -53,7 +53,6 @@ export const localsListSchema = z.array(localsSchema);
 
 class TouristPointService {
   #URL = config.localsUrl;
-  //#URL;
   #API_KEY = config.localsKey;
   #coordenadas;
 

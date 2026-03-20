@@ -10,9 +10,9 @@ function ClimaIcon() {
   const temp = data ? Math.round(weatherData.tempRealTime) : 22;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-1">
-      <img src={icon} alt="Icone Clima" className="w-16 h-16" />
-      <p className="text-gray-600 text-lg capitalize">{temp}°C</p>
+    <div className="flex flex-col items-center cursor-pointer hover:scale-110 transition">
+      <img src={icon} alt="Icone Clima" className="w-14 h-14 mb-1" />
+      <span className="text-xl font-light">{temp}°C </span>
     </div>
   );
 }

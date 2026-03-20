@@ -12,9 +12,16 @@ export function WeatherProvider({ children }) {
   const [error, setError] = useState(null);
 
   async function searchWeather(newCity) {
+    if (!newCity || newCity.trim() === "") {
+      setError(null);
+      setTimeout(() => setError("Por favor, digite o nome de uma cidade."), 10);
+      return false;
+    }
+
     const formatCity = newCity.charAt(0).toUpperCase() + newCity.slice(1).toLowerCase();
     setCity(formatCity);
     localStorage.setItem('lastCity', formatCity);
+    return true;
   }
 
   useEffect(() => {
@@ -22,23 +29,38 @@ export function WeatherProvider({ children }) {
     
     const fetchAllData = async () => {
       setLoading(true);
-      setError(null);
+      setError(null); 
 
       try {
         const responseWeather = await weatherApi.newCity(city);
         if (!responseWeather) {
           setError("Não foi possível encontrar a cidade.");
+          setLoading(false);
           return;
         }
+        
         setWeatherData(responseWeather);
-
-        await touristPointsApi.formatCoord(responseWeather.lat, responseWeather.lon);
-        const locais = await touristPointsApi.request("tourism,catering.restaurant,catering.cafe", 20);
-        setGlobalLocals(locais || []);
+  
+        try {
+          await touristPointsApi.formatCoord(responseWeather.lat, responseWeather.lon);
+          const locais = await touristPointsApi.request("tourism,catering.restaurant,catering.cafe", 20);
+          
+          if (!locais || locais.length === 0) {
+            setError("Cidade encontrada, mas sem pontos turísticos disponíveis.");
+            setGlobalLocals([]);
+          } else {
+            setGlobalLocals(locais);
+          }
+        } catch (errPontos) {
+          console.error("Erro nos pontos turísticos: ", errPontos);
+          setError("Não foi possível carregar os pontos turísticos da região.");
+          setGlobalLocals([]);
+        }
 
       } catch (err) {
-        console.error(err);
-        setError("Erro ao buscar os dados.");
+          console.error("Erro na API de Clima: ", err);
+          setError("Cidade não encontrada ou não existe.");
+
       } finally {
         setLoading(false);
       }

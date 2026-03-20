@@ -23,7 +23,6 @@ function Clima() {
   const displayWeather = weatherData || mockWeather;
   const displayCity = city || "Cidade";
 
-  // 🔥 TEXTO DINÂMICO COMPLETO
   const temp = displayWeather.tempRealTime;
   const descricao = displayWeather.textRt;
   const vento = displayWeather.windSpeed;

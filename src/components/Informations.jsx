@@ -11,12 +11,12 @@ function Informations() {
       </Link>
 
       <Link to="/gastos" className="flex flex-col items-center cursor-pointer hover:scale-110 transition">
-        <FaMoneyBillWave className="text-green-600 w-10 h-10 mb-1" />
+        <FaMoneyBillWave className="text-green-600 w-11 h-11 mb-3" />
         <span className="text-xl font-light">R$250</span>
       </Link>
 
       <Link to="/distancia" className="flex flex-col items-center cursor-pointer hover:scale-110 transition">
-        <FaTaxi className="text-gray-600 w-10 h-10 mb-1" />
+        <FaTaxi className="text-gray-600 w-11 h-11 mb-3" />
         <span className="text-xl font-light">25 min</span>
       </Link>
 
